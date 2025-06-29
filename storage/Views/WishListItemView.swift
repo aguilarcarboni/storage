@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct WishListItemView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) private var dismiss
     let item: WishListItem
     
     var body: some View {

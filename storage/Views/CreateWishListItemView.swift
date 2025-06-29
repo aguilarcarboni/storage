@@ -14,7 +14,6 @@ struct CreateWishListItemView: View {
     
     @State private var name = ""
     @State private var url = ""
-    @State private var imagePathsText = ""
     
     var body: some View {
         NavigationStack {
@@ -23,10 +22,8 @@ struct CreateWishListItemView: View {
                     TextField("Name", text: $name)
                     
                     TextField("URL (optional)", text: $url)
-                    
                 }
             }
-            .padding()
             .navigationTitle("Add Wish List Item")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -48,23 +45,14 @@ struct CreateWishListItemView: View {
     private func addItem() {
         let trimmedName = name.trimmingCharacters(in: .whitespaces)
         let trimmedUrl = url.trimmingCharacters(in: .whitespaces)
-        let imagePaths = imagePathsText.components(separatedBy: ";")
-            .map { $0.trimmingCharacters(in: .whitespaces) }
-            .filter { !$0.isEmpty }
         
         let newItem = WishListItem(
             name: trimmedName,
-            url: trimmedUrl.isEmpty ? nil : trimmedUrl,
+            url: trimmedUrl.isEmpty ? nil : trimmedUrl
         )
         
         modelContext.insert(newItem)
-        
-        do {
-            try modelContext.save()
-            dismiss()
-        } catch {
-            print("Error saving wish list item: \(error)")
-        }
+        dismiss()
     }
 }
 

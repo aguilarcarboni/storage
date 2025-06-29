@@ -9,9 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct WishListView: View {
-    @Environment(\.modelContext) private var modelContext
-    @Query(sort: \WishListItem.created, order: .reverse) private var wishListItems: [WishListItem]
-    
+    let wishListItems: [WishListItem]
     @State private var showingCreateItem = false
     @State private var showingCSVImport = false
     
@@ -30,11 +28,6 @@ struct WishListView: View {
                         LazyVStack(spacing: 12) {
                             ForEach(wishListItems) { item in
                                 WishListItemView(item: item)
-                                    .contextMenu {
-                                        Button("Delete", role: .destructive) {
-                                            deleteItem(item)
-                                        }
-                                    }
                             }
                         }
                         .padding()
@@ -66,16 +59,4 @@ struct WishListView: View {
             WishListCSVImportView()
         }
     }
-    
-    private func deleteItem(_ item: WishListItem) {
-        withAnimation {
-            modelContext.delete(item)
-            try? modelContext.save()
-        }
-    }
 }
-
-#Preview {
-    WishListView()
-        .modelContainer(for: WishListItem.self, inMemory: true)
-} 

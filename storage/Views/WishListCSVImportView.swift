@@ -238,7 +238,6 @@ struct WishListCSVImportView: View {
                         modelContext.insert(item)
                     }
                     
-                    try? modelContext.save()
                     importResult = .success(count: items.count)
                     isImporting = false
                 }
