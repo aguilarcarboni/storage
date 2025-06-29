@@ -9,17 +9,46 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
+    @State private var selectedView: SidebarItem? = .wishList
+    
     var body: some View {
-        TabView {
-            InventoryView()
-                .tabItem {
-                    Label("Inventory", systemImage: "box.fill")
+        NavigationSplitView {
+            // Sidebar
+            List(SidebarItem.allCases, id: \.self, selection: $selectedView) { item in
+                NavigationLink(value: item) {
+                    Label(item.title, systemImage: item.systemImage)
                 }
-            
-            ScanView()
-                .tabItem {
-                    Label("Scan", systemImage: "qrcode.viewfinder")
+            }
+            .navigationTitle("Storage")
+        } detail: {
+            // Detail view
+            Group {
+                switch selectedView {
+                case .wishList:
+                    WishListView()
+                case .none:
+                    Text("Select an item from the sidebar")
+                        .foregroundColor(.secondary)
                 }
+            }
+        }
+    }
+}
+
+enum SidebarItem: CaseIterable {
+    case wishList
+    
+    var title: String {
+        switch self {
+        case .wishList:
+            return "Wish List"
+        }
+    }
+    
+    var systemImage: String {
+        switch self {
+        case .wishList:
+            return "heart.fill"
         }
     }
 }
