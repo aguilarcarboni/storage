@@ -26,6 +26,7 @@ struct CreateWishListItemView: View {
                     
                 }
             }
+            .padding()
             .navigationTitle("Add Wish List Item")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
