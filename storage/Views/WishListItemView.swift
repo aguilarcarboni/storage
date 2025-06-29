@@ -25,7 +25,7 @@ struct WishListItemView: View {
                         HStack(spacing: 4) {
                             Image(systemName: "link")
                                 .font(.caption)
-                            Text(url)
+                            Text("URL")
                                 .font(.caption)
                                 .lineLimit(1)
                         }

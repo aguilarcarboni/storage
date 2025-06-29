@@ -81,7 +81,6 @@ struct WishListCSVImportView: View {
                         .foregroundStyle(.secondary)
                     }
                     .padding()
-                    .background(.regularMaterial)
                     .cornerRadius(12)
                     
                     // Selected file section
@@ -102,7 +101,6 @@ struct WishListCSVImportView: View {
                             }
                         }
                         .padding()
-                        .background(Color.blue.opacity(0.1))
                         .cornerRadius(8)
                     }
                     

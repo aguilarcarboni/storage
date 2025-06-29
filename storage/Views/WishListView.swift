@@ -10,6 +10,7 @@ import SwiftData
 
 struct WishListView: View {
     let wishListItems: [WishListItem]
+    @Environment(\.modelContext) private var modelContext
     @State private var showingCreateItem = false
     @State private var showingCSVImport = false
     
@@ -24,13 +25,17 @@ struct WishListView: View {
                         description: Text("Add items to your wish list or import from CSV")
                     )
                 } else {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
+                    VStack(spacing: 0) {
+                        List {
                             ForEach(wishListItems) { item in
                                 WishListItemView(item: item)
                             }
+                            .onDelete(perform: deleteItems)
+                            Text("Total items: \(wishListItems.count)")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                                .padding(.vertical, 8)
                         }
-                        .padding()
                     }
                 }
             }
@@ -57,6 +62,23 @@ struct WishListView: View {
         }
         .sheet(isPresented: $showingCSVImport) {
             WishListCSVImportView()
+        }
+    }
+    
+    // MARK: - Delete Functions
+    
+    private func deleteItems(offsets: IndexSet) {
+        withAnimation {
+            for index in offsets {
+                let item = wishListItems[index]
+                modelContext.delete(item)
+            }
+            
+            do {
+                try modelContext.save()
+            } catch {
+                print("Failed to delete items: \(error)")
+            }
         }
     }
 }
